@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录页</title>
+
+    <style>
+        body{
+            background-color: gray;
+        }
+        form{
+            text-align: center;
+            margin: auto;
+            top: 150px;
+            bottom: 150px;
+            right: 150px;
+            left: 150px;
+            position: absolute;
+        }
+        div{
+            margin-top: 30px;
+        }
+        input{
+            width: 300px;
+            height: 30px;
+        }
+        button{
+            width: 100px;
+            height: 30px;
+        }
+        .q{
+            margin-left: 50px;
+        }
+        a{
+            text-decoration: none;
+            color: black;
+        }
+        #1{
+            width: 80px;
+        }
+    </style>
+</head>
+<body >
+<form action="/student/index/" method="post">
+    {% csrf_token %}
+    <div class="top">
+        <div>Yourname<input type="text" name="name" ></div>
+        <div>password<input type="password" name="password" ></div>
+        <div></div>
+        <div>pillow：<input type="text" name="pillow"></div>
+        <div>
+            <button  type="submit" class="q">登录</button>
+            <button class="q"><a href="/login/register/" > 注册</a></button>
+        </div>
+        <div><h3 id="message" style="color: red">{{ message }}</h3></div>
+    </div>
+</form>
+
+<script>
+    function change_verify() {
+        // alert('切换验证码');
+        var url = "{% url 'account:verify_image' 100 36 %}";
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);  //get请求，请求地址，是否异步
+        xhr.responseType = "blob";
+
+        // 如果是跨域请求，需要用到下面两行代码
+        xhr.setRequestHeader("client_type", "DESKTOP_WEB");
+        xhr.setRequestHeader("desktop_web_access_key", _desktop_web_access_key="");
+
+        xhr.onload = function() {
+            if (this.status === 200) {
+                var blob = this.response;
+                // 二进制数据拿到了，那么要把它放在一个 html标签中，并且应该是img标签
+                var img = document.createElement("img");
+                img.onload = function(e) {
+                    window.URL.revokeObjectURL(img.src);
+                };
+                //有问题，将blob直接加载到img中，由于blob太大，会有性能影响，上方函数就是释放
+                img.src = window.URL.createObjectURL(blob);
+                // alert(img);
+                $("#id_change_verify").html(img);
+            }
+        };
+        xhr.send();
+    }
+</script>
+</body>
+</html>

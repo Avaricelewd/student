@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册页</title>
+</head>
+<body>
+<form action="/login/register/" method="post" id="register-form">
+    {% csrf_token %}
+    <div>Yourname<input type="text" name="name" id="form-name"></div>
+    <div>password<input type="password" name="password"></div>
+    <div>Youremail<input type="text" name="email"></div>
+    <div>Yournote<input type="text" name="note"></div>
+    <div>Yourhobby<input type="text" name="hobby"></div>
+    <button type="submit">注册</button>
+</form><br>
+{#<h3 id="error_message" style="color: red">{{ error_message }}</h3>#}
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<SCRIPT>
+    // jquery源代码理解。
+    // 1>文件外层被小括号括住，表示浏览器加载完jquery代码后立即执行 ，这样才不影响后面jquery的使用。
+    // 2>源码window.jQuery = window.$ = jQuery; 把jquery的方法封装到了全局对象window中，写成window.jQuery（'#form-name'）;   window.$('form-name')
+    // 3> $('form-name') jquery对象初始化、根据参数选择标签，实质上用的还是原生js方法。 document.getElementByxx()
+    // js{} 表示函数体或对象.
+    $(function () {
+        $('#form-name').change(function () {
+            console.log('触发change事件');
+            $.ajax({
+                type:"post",   //请求方式
+                url:"http://127.0.0.1:8000/login/register_check/" , // 接口
+                data:{'name':$('#form-name').val()},
+                async:true,   // 默认异步。 这个参数可以不写
+                dataType:"json",  // 返回值类型  xml
+                error:function () {
+                    // 错误回调函数，
+                    // 指的是http请求的成功、失败，不是业务逻辑用户名是否合格
+                },
+                success:function (resp) {
+                    // 成功回调
+                    console.log(resp)  // js对象
+                    console.log(resp.error_message)
+                    error_message = resp.error_message
+                    $('#error_message').html(error_message)
+                },
+                complete: function (resp) {
+                    {#console.log(resp)#}
+                    {#respText = resp.responseText#}
+                    {#respjson_obj = JSON.parse(respText)#}
+                    {#respjson_obj.error_message#}
+                    // 请求完成后执行
+                },
+            })
+        })
+    })
+
+</SCRIPT>
+</body>
+</html>

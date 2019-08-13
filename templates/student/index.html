@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学生管理系统-首页</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/e7448b18a1.js"></script>
+
+    {% load static %}
+</head>
+<body>
+<div class="container">
+    <h1 class="info">学生列表</h1>
+    <p class="table table-bordered"></p>
+
+    <a href="/student/add"><button class="btn btn-warning btn-lg float-right">添加一个学生信息<i class="fas fa-plus"></i></button></a>
+    <a href="/student/export_excel"><button type="button" class="btn btn-warning btn-lg">导出excel学生列表</button></a>
+    <a href="/student/select/"><button type="button" class="btn btn-warning btn-lg float-center">查询学生信息</button></a>
+
+    <table class="table">
+        <tr class="thead-dark">
+            <th>#</th>
+            <th>学号</th>
+            <th>姓名</th>
+            <th>年龄</th>
+            <th>性别</th>
+            <th>电话</th>
+            <th>头像</th>
+            <th>加入时间</th>
+            <th>操作</th>
+        </tr>
+         {% for a in student_list %}
+        <tr>
+            <td><input type="checkbox" name="student"></td>
+            <td>{{a.no }}</td>
+            <td>{{ a.name }}</td>
+            <td>{{ a.age }}</td>
+            <td>{{ a.get_gender_display }}</td>
+            <td>{{ a.phone }}</td>
+            <td><img src="/media/{{ a.avatar }}" width="50px" height="50px"></td>
+            <td>{{ a.join_time | date:"Y-m-d H:i:s"}}</td>
+            <td><a href="/student/{{ a.id}}/update">修改<i class="fas fa-edit"></i></a>&nbsp;&nbsp; <a href="/student/{{ a.id}}/delete">删除<i class="fas fa-trash"></i></a></td>
+        </tr>
+        {% endfor %}
+    </table>
+<!--分页-->
+    <nav aria-label="page navigation">
+        <ul class="pagination">
+             <li class="page-item">
+                 <a class="page-link" href="?page_no={{ page_previous }}&page_size=3">上一页</a></li>
+            {% for i in page_amount_list%}
+                <li {% if forloop.counter == page_nex%}
+                     class="page-item active"
+                    {% else %}
+                    class="page-item"
+                    {% endif %}
+                >
+                    <a  href="/student/index/?page_no={{ forloop.counter }}&page_size=3" class="page-link">{{ forloop.counter }}</a>
+                </li>
+            {% endfor %}
+            <li class="page-item"><a class="page-link" href="?page_no={{ page_nex }}&page_size=3">下一页</a></li>
+        </ul>
+    </nav>
+</div>
+
+</body>
+</html>

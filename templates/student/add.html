@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加学生信息</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" ></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+    <script src="https://kit.fontawesome.com/c269860567.js"></script>
+    <style>
+        div{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<form enctype="multipart/form-data" action="/student/do_add/" method="post" id="student_from" novalidate>
+    {% csrf_token %}
+    <h1 align="center">增加student</h1>
+    <p class="table table-bordered"></p>
+    <div class="from-row field-no">
+        <div >
+            <label class="required" for="id_no">
+                学号：
+            </label>
+            <input type="number" name="no" class="vIntegerField" required id="id_no" value="{{ next_no }}">
+        </div>
+    </div>
+    <p class="table table-bordered"></p>
+    <div class="from-row field-name">
+        <div>
+            <label class="required" for="id_name">
+                姓名:
+            </label>
+            <input type="text" name="name" class="vTextField" maxlength="20" required id="id_name">
+        </div>
+    </div>
+    <p class="table table-bordered"></p>
+    <div class="from-row field-age">
+        <div>
+            <label class="required" for="id_age" >
+                年龄：
+            </label>
+            <input type="number" name="age" class="vIntegerField" min="0" required id="id_age">
+        </div>
+    </div>
+    <p class="table table-bordered"></p>
+    <div class="from-row field-gender">
+        <div>
+            <label class="required" for="id_gender">
+                性别：
+            </label>
+            <select name="gender" id="id_gender">
+                <option value="0" selected>未选择</option>
+                <option value="1" >男</option>
+                <option value="2" >女</option>
+                <option value="3" >保密</option>
+            </select>
+        </div>
+    </div>
+    <p class="table table-bordered"></p>
+    <div class="from-row field-phone">
+        <div>
+            <label for="id_phone">
+                电话号码：
+            </label>
+            <input type="text" name="phone" class="vTextField" maxlength="50" id="id_phone">
+        </div>
+    </div>
+    <p class="table table-bordered"></p>
+    <div class="from-row field-avatar">
+        <div>
+            <label class="required" for="id_avatar">
+                头像
+            </label>
+            <input type="file" name="avatar" accept="image/*" required id="id_avatar">
+        </div>
+    </div>
+    <p class="table table-bordered"></p>
+    <div class="submit-row">
+        <input type="submit" value="提交" class="default" name="_save">
+    </div>
+</form>
+</body>
+</html>

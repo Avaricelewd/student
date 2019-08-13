@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>备份页</title>
+</head>
+<body>
+<form action="/login/register/" method="post" id="register-form">
+    {% csrf_token %}
+    <div>Yourname<input type="text" name="name" id="form-name"></div>
+    <div>password<input type="password" name="password"></div>
+    <div>Youremail<input type="text" name="email"></div>
+    <div>Yournote<input type="text" name="note"></div>
+    <div>Yourhobby<input type="text" name="hobby"></div>
+    <button type="submit">注册</button>
+</form><br>
+<h3 id="error_message" style="color: red">{{ error_message }}</h3>
+<script>
+    formName = document.getElementById('form-name');
+    console.log(formName);
+    // onchange  表单输出框内容变化并失去焦点focus是触发. onblur 失去焦点  onfucus获得焦点
+    formName.onchange = function(){
+        // js发送http异步请求，xhr
+        var xhr = new XMLHttpRequest();
+        xhr.open('post','http://127.0.0.1:8000/login/register_check/');
+        // 添加请求头，编码表单中的中文参数
+        xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+        // 发送请求和传表单参数
+        xhr.send('name=张');
+
+        // xhr请求状态  O 请求未初始化； 1正在加载；2已加载；3交互中；4完成
+        xhr.onreadystatechange = function(){
+            console.log(xhr);
+            if (xhr.readyState==4 && xhr.status == 200){
+                console.log(xhr.responseText);
+                respText = xhr.responseText;
+                // json 字符串转化为js对象
+                resp_obj = JSON.parse(respText);
+                console.log(resp_obj);
+                error_message = resp_obj.error_message;
+                console.log(error_message);
+                document.getElementById('error_message').innerHTML = error_message
+            }
+        };
+    }
+</script>
+
+</body>
+</html>
